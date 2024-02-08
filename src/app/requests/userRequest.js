@@ -2,6 +2,44 @@ import userUtils from "../utils/userUtils.js";
 
 class userRequest {
 
+    /**
+     * 
+     * @param req
+     * @param res
+     * @param next 
+     * verifica se todos os parametros foram enviados
+     * @returns 
+     */
+    setLogin(req,res, next) {
+        let msg = '';
+
+        if (!req.body.password) {
+            msg = 'Parametro password é obrigatorio.'
+        }
+
+        if (!req.body.email) {
+            msg = 'Parametro email é obrigatorio.'
+        }
+
+        if(msg) {
+            return res.status(400).json({
+                error: true,
+                msgUser: msg,
+                msgOriginal: msg
+            });
+        }
+
+        next();
+    }
+
+    /**
+     * 
+     * @param req
+     * @param res
+     * @param next 
+     * verifica se todos os parametros foram enviados
+     * @returns 
+     */
     setUser(req, res, next) {
 
         let msg = '';
@@ -35,10 +73,10 @@ class userRequest {
         }
 
         if (!userUtils.emailValido(req.body.email)) {
-            msg = 'Parametro email invalido.'
+            msg = 'Parametro email invalido.'   
         }
 
-        if (msg) {
+        if (msg) {  
             return res.status(400).json({
                 error: true,
                 msgUser: msg,

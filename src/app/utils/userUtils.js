@@ -1,12 +1,13 @@
+import userRepository from "../repositories/userRepository.js";
+
 class userUtils {
 
     /**
      * 
-     * @param {*} nome 
+     * @param nome 
      * formata um nome
      * @returns 
      */
-
     formatarNome(nome)
     {
         const arrNome = nome.split(' ');
@@ -19,11 +20,10 @@ class userUtils {
 
     /**
      * 
-     * @param {*} cpf 
+     * @param cpf 
      * formata um cpf
      * @returns 
      */
-
     formatarCpf(cpf)
     {
         const cpfLimpo = cpf.replace(/\D/g, '');
@@ -34,7 +34,7 @@ class userUtils {
 
     /**
      * 
-     * @param {*} telefone 
+     * @param telefone 
      * formata um numero de telefone
      * @returns 
      */
@@ -47,7 +47,7 @@ class userUtils {
 
     /**
      * 
-     * @param {*} email 
+     * @param email 
      * valida se um email é valido
      * @returns 
      */
@@ -59,7 +59,7 @@ class userUtils {
 
     /**
      * 
-     * @param {*} data
+     * @param data
      * '2023-09-09 -> formato de entrada' 
      * @returns 
      */
@@ -72,6 +72,12 @@ class userUtils {
         return `${ano}/${mes}/${dia}`;
     }
 
+    /**
+     * 
+     * @param {*} dados 
+     * monta um array de inserção de dados
+     * @returns 
+     */
     async setUser(dados) {
         const nome     = (dados.name)      ? this.formatarNome(dados.name)         : '';
         const lastName = (dados.last_name) ? this.formatarNome(dados.last_name)    : ''; 
@@ -81,6 +87,48 @@ class userUtils {
         const arrDados = {name: nome, last_name: lastName, cpf: cpf, telefone: telefone, email: dados.email, password: dados.password, type: dados.type.toUpperCase()};
 
         return arrDados;
+    }
+
+     /**
+     * 
+     * @param cpf 
+     * verifica se já existe esse cpf na base de dados
+     * @returns 
+     */
+    async verifyCpf(cpf) {
+        
+        let verify = false;
+
+        try{
+            const arrDados = userRepository.verifyCpf(this.formatarCpf(cpf));
+
+            verify = (arrDados) ? true : false;
+        }catch(e) {
+            console.log(e.message);
+        }
+
+        return verify;
+    }
+
+    /**
+     * 
+     * @param telefone 
+     * verifica se já existe esse telefone na base de dados
+     * @returns 
+     */
+    async verifyTelephone(telefone) {
+
+        let verify = false;
+
+        try{
+            const arrDados = userRepository.verifyTelephone(this.formatarTelefone(telefone));
+
+            verify = (arrDados) ? true : false;
+        }catch(e) {
+            console.log(e.message);
+        }
+
+        return verify;
     }
 }
 
