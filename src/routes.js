@@ -13,14 +13,14 @@ router.post('/login', userRequest.setLogin, userController.setLoginAction);
 
 // GET
 
-
-
+router.post('/list', jwtUtils.checkToken);
 
 // UPDATE
 
 
 
 // DELETE
+
 
 
 // CASO NAO ENCONTRE NENHUMA ROTA

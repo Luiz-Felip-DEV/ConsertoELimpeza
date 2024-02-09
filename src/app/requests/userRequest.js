@@ -77,7 +77,7 @@ class userRequest {
         }
 
         if (msg) {  
-            return res.status(400).json({
+            return res.status(400).json({   
                 error: true,
                 msgUser: msg,
                 msgOriginal: msg

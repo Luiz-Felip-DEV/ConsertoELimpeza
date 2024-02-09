@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken';
+
 class Jwt {
 
     /**
