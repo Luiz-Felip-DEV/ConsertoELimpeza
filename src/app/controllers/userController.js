@@ -21,7 +21,7 @@ class userController {
 
         try {
             arrDados = await userRepository.setLogin(email, senhaHash);
-            verify   = (!arrDados) ? true : false;
+            verify   = (!arrDados[0]) ? true : false;
         }catch(e) {
             return res.status(400).json({
                 error: true,
@@ -183,6 +183,41 @@ class userController {
             error: false,
             msgUser: "Sucesso! Os dados foram excluidos com êxito.",
             msgOriginal: null
+        });
+    }
+
+    async getDadosUser(req, res) 
+    {
+        const idUser   = await jwtUtils.idRecovery(req);
+        let arrDados   = [];
+        let verify     = false;
+
+        try {
+
+            arrDados = await userRepository.getDadosUser(idUser);
+            verify   = (!arrDados[0]) ? true : false;
+
+        }catch(e) {
+            return res.status(400).json({
+                error: true,
+                msgUser: "Desculpe, ocorreu um erro ao tentar procurar dados do usuario. Se o problema persistir, entre em contato conosco para assistência.",
+                msgOriginal: "Erro ao buscar usuario, caiu no catch."
+            });
+        }
+
+        if(verify) {
+            return res.status(400).json({
+                error: true,
+                msgUser: "Nenhum usuario encontrado. Se o problema persistir, entre em contato conosco para assistência.",
+                msgOriginal: "Não encontrou o usuario no banco."
+            });
+        }
+
+        return res.status(200).json({
+            error: false,
+            msgUser: null,
+            msgOriginal: null,
+            result: arrDados
         });
     }
 

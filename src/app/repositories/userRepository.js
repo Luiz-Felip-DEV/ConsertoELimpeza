@@ -138,6 +138,20 @@ class userRepository {
                 if (error) return reject(false);
 
                 const row = JSON.parse(JSON.stringify(result));
+                return resolve(row);
+            });
+        });
+    }
+
+    async getDadosUser(id)
+    {
+        const sql = 'SELECT name, last_name, cpf, telefone, email FROM users WHERE id = ?';
+
+        return new Promise((resolve, reject) => {
+            conexao.query(sql,id,(error, result) => {
+                if (error) return reject(false);
+
+                const row = JSON.parse(JSON.stringify(result));
                 // console.log(row);
                 return resolve(row);
             });

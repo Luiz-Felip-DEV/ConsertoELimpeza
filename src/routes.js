@@ -13,7 +13,7 @@ router.post('/login', userRequest.setLogin, userController.setLoginAction);
 
 // GET
 
-router.post('/list', jwtUtils.checkToken);
+router.get('/user', jwtUtils.checkToken, userController.getDadosUser);
 
 // UPDATE
 
