@@ -100,9 +100,9 @@ class userUtils {
         let verify = false;
 
         try{
-            const arrDados = userRepository.verifyCpf(this.formatarCpf(cpf));
+            const arrDados = await userRepository.verifyCpf(this.formatarCpf(cpf));
 
-            verify = (arrDados) ? true : false;
+            verify = (arrDados[0]) ? true : false;
         }catch(e) {
             console.log(e.message);
         }
@@ -121,14 +121,52 @@ class userUtils {
         let verify = false;
 
         try{
-            const arrDados = userRepository.verifyTelephone(this.formatarTelefone(telefone));
+            const arrDados = await userRepository.verifyTelephone(this.formatarTelefone(telefone));
 
-            verify = (arrDados) ? true : false;
+            verify = (arrDados[0]) ? true : false;
         }catch(e) {
             console.log(e.message);
         }
 
         return verify;
+    }
+
+    /**
+     * 
+     * @param email 
+     * verifica se já existe esse email na base de dados
+     * @returns 
+     */
+    async verifyEmail(email) {
+
+        let verify = false;
+
+        try{
+            const arrDados = await userRepository.verifyEmail(email);
+
+            verify = (arrDados[0]) ? true : false;
+        }catch(e) {
+            console.log(e.message);
+        }
+
+        return verify;
+    }
+
+    /**
+     * 
+     * @param dados 
+     * monta o array para o update
+     * @returns 
+     */
+    async updateUser(dados) {
+        const nome     = (dados.name)      ? this.formatarNome(dados.name)         : '';
+        const lastName = (dados.last_name) ? this.formatarNome(dados.last_name)    : ''; 
+        const cpf      = (dados.cpf)       ? this.formatarCpf(dados.cpf)           : '';
+        const telefone = (dados.telefone)  ? this.formatarTelefone(dados.telefone) : '';
+ 
+        const arrDados = {name: nome, last_name: lastName, cpf: cpf, telefone: telefone, email: dados.email};
+
+        return arrDados;
     }
 }
 

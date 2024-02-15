@@ -65,6 +65,24 @@ class Jwt {
             });
         }
     }
+
+    /**
+     * 
+     * @param req 
+     * action para pegar o id do token
+     * @returns 
+     */
+    async idRecovery(req) {
+
+        const authHeader = req.headers['authorization'];
+        const token      = authHeader && authHeader.split(" ")[1];
+
+        const decoded = jwt.verify(token, process.env.SECRET);
+
+        const userId = decoded.id;
+
+        return userId;
+    }
 }
 
 export default new Jwt();

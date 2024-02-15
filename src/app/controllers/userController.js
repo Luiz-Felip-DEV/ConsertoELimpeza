@@ -12,7 +12,8 @@ class userController {
      * action para o login
      * @returns 
      */
-    async setLoginAction(req,res) {
+    async setLoginAction(req,res) 
+    {
         const email     = req.body.email;
         const senhaHash = crypto.createHash('sha256').update(req.body.password).digest('hex');
         let arrDados    = [];
@@ -58,10 +59,11 @@ class userController {
      * action para o cadastro de usuario
      * @returns 
      */
-    async setUserAction(req, res) {
-        const arrDados = await userUtils.setUser(req.body);
+    async setUserAction(req, res) 
+    {
+        const arrDados  = await userUtils.setUser(req.body);
 
-        if(userUtils.verifyCpf) {
+        if(await userUtils.verifyCpf(req.body.cpf)) {
             return res.status(400).json({
                 error: true,
                 msgUser: "O CPF fornecido já está associado a uma conta existente. Por favor, use um CPF diferente para se cadastrar.",
@@ -69,10 +71,18 @@ class userController {
             });
         }
 
-        if(userUtils.verifyTelephone) {
+        if(await userUtils.verifyTelephone(req.body.telefone)) {
             return res.status(400).json({
                 error: true,
                 msgUser: "O Telefone fornecido já está associado a uma conta existente. Por favor, use um Telefone diferente para se cadastrar.",
+                msgOriginal: null
+            });
+        }
+
+        if(await userUtils.verifyEmail(req.body.email)) {
+            return res.status(400).json({
+                error: true,
+                msgUser: "O email fornecido já está associado a uma conta existente. Por favor, use um Email diferente para se cadastrar.",
                 msgOriginal: null
             });
         }
@@ -92,6 +102,100 @@ class userController {
             msgUser: "Sucesso! O agendamento foi concluído com êxito.",
             msgOriginal: null
         });
+    }
+
+    /**
+     * 
+     * @param req
+     * @param res 
+     * action para a atualização de dados do usuario
+     * @returns 
+     */
+    async updateUser(req, res)
+    {
+        const arrDados = await userUtils.updateUser(req.body);
+        const idUser   = await jwtUtils.idRecovery(req);
+        let updateUser = [];
+        let verify     = false;
+
+        try {
+
+            updateUser = await userRepository.updateUser(arrDados, idUser);
+            verify     = (updateUser.affectedRows != 1) ? true : false;
+
+        } catch(e) {
+            return res.status(400).json({
+                error: true,
+                msgUser: "Desculpe, ocorreu um erro ao tentar atualizar dados do usuario. Verifique se todos os campos foram preenchidos corretamente e tente novamente. Se o problema persistir, entre em contato conosco para assistência.",
+                msgOriginal: "Erro ao atualizar dados do usuario. Caiu no catch"
+            });
+        }
+
+        if (verify) {
+            return res.status(400).json({
+                error: true,
+                msgUser: "Desculpe, ocorreu um erro ao tentar atualizar dados do usuario. Verifique se todos os campos foram preenchidos corretamente e tente novamente. Se o problema persistir, entre em contato conosco para assistência.",
+                msgOriginal: "Não encontrou o usuario no banco."
+            });
+        }
+
+        return res.status(200).json({
+            error: false,
+            msgUser: "Sucesso! Os dados foram atualizados com êxito.",
+            msgOriginal: null
+        });
+    }
+
+    /**
+     * 
+     * @param req
+     * @param res 
+     * action para a deleção de um usuario
+     * @returns 
+     */
+    async deleteUser(req, res)
+    {
+        const idUser   = await jwtUtils.idRecovery(req);
+        let verify     = false;
+
+        try {
+
+            arrDados = await userRepository.deleteUser(idUser);
+            verify   = (arrDados.affectedRows != 1) ? true : false;
+
+        }catch(e) {
+            return res.status(400).json({
+                error: true,
+                msgUser: "Desculpe, ocorreu um erro ao tentar excluir dados do usuario. Se o problema persistir, entre em contato conosco para assistência.",
+                msgOriginal: "Erro ao excluir dados do usuario. Caiu no catch."
+            });
+        }
+
+        if (verify) {
+            return res.status(400).json({
+                error: true,
+                msgUser: "Desculpe, ocorreu um erro ao tentar excluir dados do usuario. Se o problema persistir, entre em contato conosco para assistência.",
+                msgOriginal: "Não encontrou o usuario no banco."
+            });
+        }
+
+        return res.status(200).json({
+            error: false,
+            msgUser: "Sucesso! Os dados foram excluidos com êxito.",
+            msgOriginal: null
+        });
+    }
+
+    /**
+     * 
+     * @param req
+     * @param res 
+     * action para a atualização de senha
+     * @returns 
+     */
+    async putPassword(req, res) 
+    {
+        // fazer com o envio de um codigo   
     }
 }
 

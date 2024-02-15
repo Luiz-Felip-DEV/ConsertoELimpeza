@@ -17,11 +17,12 @@ router.post('/list', jwtUtils.checkToken);
 
 // UPDATE
 
+router.put('/update', jwtUtils.checkToken,userRequest.updateUser, userController.updateUser);
 
 
 // DELETE
 
-
+router.delete('/user', jwtUtils.checkToken, userController.deleteUser);
 
 // CASO NAO ENCONTRE NENHUMA ROTA
 
