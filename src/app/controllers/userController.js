@@ -38,9 +38,10 @@ class userController {
             });
         }
 
-        const jwt = jwtUtils.createToken(arrDados[0].id);
+        const jwt = jwtUtils.createToken(arrDados[0].id, arrDados[0].type);
 
         delete arrDados[0].id;
+        delete arrDados[0].type;
 
         return res.status(200).json({
             error: false,
@@ -49,7 +50,6 @@ class userController {
             jwt: jwt,
             results: arrDados
         });
-
     }
 
     /**
