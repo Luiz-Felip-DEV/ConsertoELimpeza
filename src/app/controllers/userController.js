@@ -186,6 +186,13 @@ class userController {
         });
     }
 
+    /**
+     * 
+     * @param req
+     * @param res 
+     * action para trazer dados do usuario
+     * @returns 
+     */
     async getDadosUser(req, res) 
     {
         const idUser   = await jwtUtils.idRecovery(req);

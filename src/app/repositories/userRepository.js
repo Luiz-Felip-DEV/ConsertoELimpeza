@@ -117,7 +117,6 @@ class userRepository {
                 if (error) return reject(false);
 
                 const row = JSON.parse(JSON.stringify(result));
-                // console.log(row);
                 return resolve(row);
             });
         });
@@ -143,6 +142,12 @@ class userRepository {
         });
     }
 
+    /**
+     * 
+     * @param id 
+     * query para trazer dados do usuario
+     * @returns 
+     */
     async getDadosUser(id)
     {
         const sql = 'SELECT name, last_name, cpf, telefone, email FROM users WHERE id = ?';
@@ -152,7 +157,6 @@ class userRepository {
                 if (error) return reject(false);
 
                 const row = JSON.parse(JSON.stringify(result));
-                // console.log(row);
                 return resolve(row);
             });
         });

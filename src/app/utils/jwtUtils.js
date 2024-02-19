@@ -8,8 +8,8 @@ class Jwt {
      * cria um token JWT
      * @returns 
      */
-    createToken(id, type) {
-
+    createToken(id, type) 
+    {
         const secret         = process.env.SECRET;
         const tempoExpiracao = 4 * 60 * 60;
 
@@ -30,8 +30,8 @@ class Jwt {
      * verifica se o token JWT é válido
      * @returns 
      */
-    checkToken(req, res, next) {
-
+    checkToken(req, res, next) 
+    {
         const authHeader = req.headers['authorization'];
         const token      = authHeader && authHeader.split(" ")[1];
     
@@ -73,8 +73,8 @@ class Jwt {
      * action para pegar o id do token
      * @returns 
      */
-    async idRecovery(req) {
-
+    async idRecovery(req)
+    {
         const authHeader = req.headers['authorization'];
         const token      = authHeader && authHeader.split(" ")[1];
 
@@ -91,8 +91,8 @@ class Jwt {
      * action para pegar o tipo do usuario
      * @returns 
      */
-    async TypeRecovery(req) {
-
+    async TypeRecovery(req)
+    {
         const authHeader = req.headers['authorization'];
         const token      = authHeader && authHeader.split(" ")[1];
 

@@ -78,7 +78,8 @@ class userUtils {
      * monta um array de inserção de dados
      * @returns 
      */
-    async setUser(dados) {
+    async setUser(dados)
+    {
         const nome     = (dados.name)      ? this.formatarNome(dados.name)         : '';
         const lastName = (dados.last_name) ? this.formatarNome(dados.last_name)    : ''; 
         const cpf      = (dados.cpf)       ? this.formatarCpf(dados.cpf)           : '';
@@ -95,7 +96,8 @@ class userUtils {
      * verifica se já existe esse cpf na base de dados
      * @returns 
      */
-    async verifyCpf(cpf) {
+    async verifyCpf(cpf)
+    {
         
         let verify = false;
 
@@ -116,7 +118,8 @@ class userUtils {
      * verifica se já existe esse telefone na base de dados
      * @returns 
      */
-    async verifyTelephone(telefone) {
+    async verifyTelephone(telefone)
+    {
 
         let verify = false;
 
@@ -137,7 +140,8 @@ class userUtils {
      * verifica se já existe esse email na base de dados
      * @returns 
      */
-    async verifyEmail(email) {
+    async verifyEmail(email)
+    {
 
         let verify = false;
 
@@ -158,7 +162,8 @@ class userUtils {
      * monta o array para o update
      * @returns 
      */
-    async updateUser(dados) {
+    async updateUser(dados)
+    {
         const nome     = (dados.name)      ? this.formatarNome(dados.name)         : '';
         const lastName = (dados.last_name) ? this.formatarNome(dados.last_name)    : ''; 
         const cpf      = (dados.cpf)       ? this.formatarCpf(dados.cpf)           : '';

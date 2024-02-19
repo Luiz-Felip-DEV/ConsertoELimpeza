@@ -10,7 +10,8 @@ class userRequest {
      * verifica se todos os parametros foram enviados
      * @returns 
      */
-    setLogin(req,res, next) {
+    setLogin(req,res, next)
+    {
         let msg = '';
 
         if (!req.body.password) {
@@ -40,8 +41,8 @@ class userRequest {
      * verifica se todos os parametros foram enviados
      * @returns 
      */
-    setUser(req, res, next) {
-
+    setUser(req, res, next)
+    {
         let msg = '';
 
         if (!req.body.type) {
@@ -95,8 +96,8 @@ class userRequest {
      * verifica se todos os parametros foram enviados
      * @returns 
      */
-    updateUser(req, res, next) {
-
+    updateUser(req, res, next)
+    {
         let msg = '';
 
         if(!req.body.email) {
