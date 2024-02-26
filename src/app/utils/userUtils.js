@@ -38,7 +38,8 @@ class userUtils {
      * formata um numero de telefone
      * @returns 
      */
-    formatarTelefone(telefone) {
+    formatarTelefone(telefone)
+    {
         const telefoneLimpo = telefone.replace(/\D/g, '');
 
         const regex = /^(\d{2})(\d{5})(\d{4})$/;
@@ -84,6 +85,11 @@ class userUtils {
         const lastName = (dados.last_name) ? this.formatarNome(dados.last_name)    : ''; 
         const cpf      = (dados.cpf)       ? this.formatarCpf(dados.cpf)           : '';
         const telefone = (dados.telefone)  ? this.formatarTelefone(dados.telefone) : '';
+
+        console.log('Nome: ' + nome);
+        console.log('Sobrenome: ' + lastName);
+        console.log('Cpf: ' + cpf);
+        console.log('Telefone: ' + telefone);
  
         const arrDados = {name: nome, last_name: lastName, cpf: cpf, telefone: telefone, email: dados.email, password: dados.password, type: dados.type.toUpperCase()};
 
@@ -98,7 +104,6 @@ class userUtils {
      */
     async verifyCpf(cpf)
     {
-        
         let verify = false;
 
         try{
@@ -120,7 +125,6 @@ class userUtils {
      */
     async verifyTelephone(telefone)
     {
-
         let verify = false;
 
         try{
@@ -142,7 +146,6 @@ class userUtils {
      */
     async verifyEmail(email)
     {
-
         let verify = false;
 
         try{

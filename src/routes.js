@@ -18,6 +18,7 @@ router.get('/user', jwtUtils.checkToken, userController.getDadosUser);
 // UPDATE
 
 router.put('/update', jwtUtils.checkToken,userRequest.updateUser, userController.updateUser);
+router.put('/password', userRequest.updatePassword, userController.putPassword);
 
 
 // DELETE

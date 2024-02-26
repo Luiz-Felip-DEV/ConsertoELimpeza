@@ -23,7 +23,7 @@ class userController {
             arrDados = await userRepository.setLogin(email, senhaHash);
             verify   = (!arrDados[0]) ? true : false;
         }catch(e) {
-            return res.status(400).json({
+            return res.status(500).json({
                 error: true,
                 msgUser: "Desculpe, ocorreu um erro ao tentar fazer o login. Verifique se todos os campos foram preenchidos corretamente e tente novamente. Se o problema persistir, entre em contato conosco para assistência.",
                 msgOriginal: "Erro ao tentar logar. Caiu no catch"
@@ -90,7 +90,7 @@ class userController {
         try {
             await userRepository.setUser(arrDados);
         } catch(e) {
-            return res.status(400).json({
+            return res.status(500).json({
                 error: true,
                 msgUser: "Desculpe, ocorreu um erro ao tentar cadastrar usuario. Verifique se todos os campos foram preenchidos corretamente e tente novamente. Se o problema persistir, entre em contato conosco para assistência.",
                 msgOriginal: "Erro ao cadastrar usuario. Caiu no catch"
@@ -115,6 +115,7 @@ class userController {
     {
         const arrDados = await userUtils.updateUser(req.body);
         const idUser   = await jwtUtils.idRecovery(req);
+        
         let updateUser = [];
         let verify     = false;
 
@@ -124,7 +125,7 @@ class userController {
             verify     = (updateUser.affectedRows != 1) ? true : false;
 
         } catch(e) {
-            return res.status(400).json({
+            return res.status(500).json({
                 error: true,
                 msgUser: "Desculpe, ocorreu um erro ao tentar atualizar dados do usuario. Verifique se todos os campos foram preenchidos corretamente e tente novamente. Se o problema persistir, entre em contato conosco para assistência.",
                 msgOriginal: "Erro ao atualizar dados do usuario. Caiu no catch"
@@ -150,7 +151,7 @@ class userController {
      * 
      * @param req
      * @param res 
-     * action para a deleção de um usuario
+     * action para a deleção de um usuario  
      * @returns 
      */
     async deleteUser(req, res)
@@ -164,7 +165,7 @@ class userController {
             verify   = (arrDados.affectedRows != 1) ? true : false;
 
         }catch(e) {
-            return res.status(400).json({
+            return res.status(500).json({
                 error: true,
                 msgUser: "Desculpe, ocorreu um erro ao tentar excluir dados do usuario. Se o problema persistir, entre em contato conosco para assistência.",
                 msgOriginal: "Erro ao excluir dados do usuario. Caiu no catch."
@@ -205,7 +206,7 @@ class userController {
             verify   = (!arrDados[0]) ? true : false;
 
         }catch(e) {
-            return res.status(400).json({
+            return res.status(500).json({
                 error: true,
                 msgUser: "Desculpe, ocorreu um erro ao tentar procurar dados do usuario. Se o problema persistir, entre em contato conosco para assistência.",
                 msgOriginal: "Erro ao buscar usuario, caiu no catch."
@@ -237,7 +238,7 @@ class userController {
      */
     async putPassword(req, res) 
     {
-        // fazer com o envio de um codigo   
+        
     }
 }
 

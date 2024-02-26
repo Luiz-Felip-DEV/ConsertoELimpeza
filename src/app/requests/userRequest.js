@@ -134,6 +134,37 @@ class userRequest {
 
         next();
     }
+
+    /**
+     * 
+     * @param req
+     * @param res
+     * @param next 
+     * verifica se todos os parametros foram enviados
+     * @returns 
+     */
+    updatePassword(req, res, next)
+    {
+        let msg = '';
+
+        if(!req.body.password) {
+            msg = 'Parametro password é obrigatorio.'
+        }
+
+        if(!req.body.new_password) {
+            msg = 'Parametro new_password é obrigatorio.'
+        }  
+
+        if (msg) {  
+            return res.status(400).json({   
+                error: true,
+                msgUser: msg,
+                msgOriginal: msg
+            });
+        }
+
+        next();
+    }
 }
 
 export default new userRequest();
