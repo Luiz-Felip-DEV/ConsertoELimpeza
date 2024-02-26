@@ -2,6 +2,7 @@ import userUtils from "../utils/userUtils.js";
 import userRepository from "../repositories/userRepository.js";
 import crypto from 'crypto';
 import jwtUtils from "../utils/jwtUtils.js";
+import emailController from "./emailController.js";
 
 class userController {
 
@@ -238,7 +239,7 @@ class userController {
      */
     async putPassword(req, res) 
     {
-        
+        console.log(await emailController.email());   
     }
 }
 
