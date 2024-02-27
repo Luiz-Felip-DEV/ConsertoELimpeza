@@ -234,13 +234,87 @@ class userController {
      * 
      * @param req
      * @param res 
+     * action para envio de codigo para reset de senha
+     * @returns 
+     */
+    async resetCode(req, res)
+    {
+        const email  = req.query.email;
+        let arrDados = [];
+        let verify   = false; 
+
+        try {
+            arrDados = await userRepository.resetCode(email);
+            verify   = (!arrDados[0]) ? true : false;
+        } catch(e) {
+            return res.status(500).json({
+                error: true,
+                msgUser: "Ocorreu um erro interno ao processar sua solicitação de redefinição de senha. Por favor, tente novamente mais tarde.",
+                msgOriginal: "Caiu no catch, motivo: " + e.message
+            });
+        }
+
+        if (verify) {
+            return res.status(400).json({
+                error: true,
+                msgUser: "O e-mail fornecido não está associado a uma conta. Verifique se você digitou corretamente o e-mail ou registre-se para criar uma nova conta.",
+                msgOriginal: "Nenhum email encontrado no banco."
+            });
+        }
+
+        const code = await emailController.resetPassword(email, arrDados[0].name);
+
+        return res.status(200).json({
+            error: false,
+            msgUser: 'Um código de redefinição de senha foi enviado para o seu endereço de e-mail.',
+            msgOriginal: null,
+            codigo: code
+        });
+    }
+
+     /**
+     * 
+     * @param req
+     * @param res 
      * action para a atualização de senha
      * @returns 
      */
-    async putPassword(req, res) 
-    {
-        console.log(await emailController.email());   
-    }
+     async putPassword(req, res) 
+     {
+        const email   = req.body.email;
+        const newPass = crypto.createHash('sha256').update(req.body.new_password).digest('hex');
+        let arrDados  = [];
+        let verify    = false;  
+        
+        try {
+            arrDados = await userRepository.putPassword(email, newPass);
+            verify   = (arrDados.affectedRows != 1) ? true : false;
+        } catch(e) {
+            return res.status(500).json({
+                error: true,
+                msgUser: "Ocorreu um erro interno ao processar sua solicitação de redefinição de senha. Por favor, tente novamente mais tarde.",
+                msgOriginal: "Caiu no catch, motivo: " + e.message
+            });
+        }
+
+        if (verify) {
+            return res.status(400).json({
+                error: true,
+                msgUser: "Ocorreu um erro interno ao processar sua solicitação de redefinição de senha. Por favor, tente novamente mais tarde.",
+                msgOriginal: "array dados retornou vazio."
+            });
+        }
+
+        const arrName = await userRepository.resetCode(email);
+
+        await emailController.confirmEmail(arrName[0].name, email);
+
+        return res.status(200).json({
+            error: false,
+            msgUser: 'Sua senha foi redefinida com sucesso.',
+            msgOriginal: null
+        }); 
+     }
 }
 
 export default new userController();

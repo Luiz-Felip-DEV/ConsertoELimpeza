@@ -166,16 +166,37 @@ class userRepository {
 
     /**
      * 
-     * @param id 
+     * @param email 
+     * query para auxiliar envio de email
+     * @returns 
+     */
+    async resetCode(email)
+    {
+        const sql = 'SELECT name FROM users WHERE email = ?';
+
+        return new Promise((resolve, reject) => {   
+            conexao.query(sql,email,(error, result) => {
+                if (error) return reject(false);
+
+                const row = JSON.parse(JSON.stringify(result));
+                return resolve(row);
+            });
+        });
+    }
+
+    /**
+     * 
+     * @param email
+     * @param newPassword  
      * query para atualizar senha
      * @returns 
      */
-    async putPassword(id, password, newPassword)
+    async putPassword(email, newPassword)
     {
-        const sql = 'UPDATE users SET password = ? WHERE id = ? AND password = ?';
+        const sql = 'UPDATE users SET password = ? WHERE email = ?';
 
         return new Promise((resolve, reject) => {   
-            conexao.query(sql,[newPassword, id, password],(error, result) => {
+            conexao.query(sql,[newPassword, email],(error, result) => {
                 if (error) return reject(false);
 
                 const row = JSON.parse(JSON.stringify(result));

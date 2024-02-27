@@ -24,6 +24,29 @@ class emailController {
             return false;
         }
 
+        return codigo;
+    }
+
+    async confirmEmail(name, email)
+    {
+        const transporter  = await emailUtils.emailConnection();
+
+        const htmlBody = await emailUtils.confirmEmail(name);
+
+        try {
+                
+            transporter.sendMail({
+                from: process.env.EMAIL,
+                to: email,
+                subject: "Alteração de Senha",
+                html: htmlBody,
+                text: `Obrigado por enviar o formulario de ajuda, SR(A) <strong>${'Luiz Felipe'}</strong>, Daqui alguns instantes você receberá um retorno!`
+            });  
+            
+        } catch(error) {
+            return false;
+        }
+
         return true;
     }
 }

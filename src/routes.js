@@ -14,6 +14,7 @@ router.post('/login', userRequest.setLogin, userController.setLoginAction);
 // GET
 
 router.get('/user', jwtUtils.checkToken, userController.getDadosUser);
+router.get('/reset-code', userController.resetCode);
 
 // UPDATE
 
