@@ -28,6 +28,6 @@ router.delete('/user', jwtUtils.checkToken, userController.deleteUser);
 
 // CASO NAO ENCONTRE NENHUMA ROTA
 
-router.use((req, res) => {res.status(404).json({error: true,msgUser: "Rota não encontrada.",msgOriginal: "Rota não encontrada." })});
+router.use((req, res) => {res.status(404).json({error: true, msgUser: "Rota não encontrada.", msgOriginal: "Rota não encontrada." })});
 
 export default router 

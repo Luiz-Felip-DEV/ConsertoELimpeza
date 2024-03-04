@@ -98,6 +98,8 @@ class userController {
             });
         }
 
+        await emailController.confirmCadaster(arrDados.name, arrDados.email);
+
         return res.status(200).json({
             error: false,
             msgUser: "Sucesso! O agendamento foi concluído com êxito.",

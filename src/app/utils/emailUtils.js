@@ -3,6 +3,11 @@ import nodemailer from 'nodemailer';
 
 class emailUtils {
 
+    /**
+     *  
+     * action para a conexão do servidor de email
+     * @returns 
+     */
     async emailConnection()
     {
         const transporter = nodemailer.createTransport({
@@ -18,6 +23,13 @@ class emailUtils {
         return transporter;
     }
 
+    /**
+     * 
+     * @param nome
+     * @param codigo 
+     * action para a criação do hmtl para o codigo de reset de senha
+     * @returns 
+     */
     async htmlEmail(nome, codigo) 
     {
         const htmlBody = `<!DOCTYPE html>
@@ -46,6 +58,12 @@ class emailUtils {
         return htmlBody;
     }
 
+    /**
+     * 
+     * @param nome
+     * action para a confirmação de alteração de senha
+     * @returns 
+     */
     async confirmEmail(nome)
     {
         const hmtlBody = `<!DOCTYPE html>
@@ -69,6 +87,38 @@ class emailUtils {
                                 </html>
                             `
         return hmtlBody;
+    }
+
+    /**
+     * 
+     * @param nome 
+     * action para a confirmação de cadastro
+     * @returns 
+     */
+    async confirmCadaster(nome)
+    {
+        const htmlBody = `<!DOCTYPE html>
+                            <html lang="pt-br">
+                            <head>
+                                <meta charset="UTF-8">
+                                <meta http-equiv="X-UA-Compatible" content="IE=edge">
+                                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                                <title>Confirmação de Criação de Nova Conta</title>
+                            </head>
+                            <body>
+                                <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background-color: #f9f9f9; padding: 20px; border-radius: 10px; border: 1px solid #ddd;">
+                                    <h2 style="color: #333;">Olá, ${nome}</h2>
+                                    <p style="color: #555;">Sua nova conta foi criada com sucesso. Bem-vindo!</p>
+                                    <p style="color: #555;">Agora você pode acessar todos os recursos disponíveis em nosso site.</p>
+                                    <p style="color: #555;">Se você não criou essa conta, por favor, ignore este e-mail.</p>
+                                    <p style="color: #555;">Em caso de dúvidas ou problemas, entre em contato conosco.</p>
+                                    <p style="color: #555;">Atenciosamente,</p>
+                                    <p style="color: #555; font-weight: bold;">Sua equipe</p>
+                                </div>
+                            </body>
+                            </html>
+                        `
+        return htmlBody;
     }
 }
 
