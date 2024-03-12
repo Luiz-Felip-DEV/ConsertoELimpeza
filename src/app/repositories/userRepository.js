@@ -204,6 +204,27 @@ class userRepository {
             });
         });
     }
+
+
+    /**
+     * 
+     * @array dados 
+     * query para gravar log de execução
+     * @returns 
+     */
+    async insertLog(dados)
+    {
+        const sql = 'INSERT INTO users_logs SET ?';
+
+        return new Promise((resolve, reject) => {   
+            conexao.query(sql,dados,(error, result) => {
+                if (error) return reject(false);
+
+                const row = JSON.parse(JSON.stringify(result));
+                return resolve(row);
+            });
+        });
+    }
 }
 
 export default new userRepository();

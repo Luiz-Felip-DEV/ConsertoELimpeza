@@ -41,6 +41,8 @@ class userController {
 
         const jwt = jwtUtils.createToken(arrDados[0].id, arrDados[0].type);
 
+        await userRepository.insertLog(await userUtils.insertLog('Usuario Logado com Sucesso', 'Success', 'Select', arrDados[0].id));
+
         delete arrDados[0].id;
         delete arrDados[0].type;
 
@@ -102,7 +104,7 @@ class userController {
 
         return res.status(200).json({
             error: false,
-            msgUser: "Sucesso! O agendamento foi concluído com êxito.",
+            msgUser: "Sucesso! O cadastro foi concluído com êxito.",
             msgOriginal: null
         });
     }
@@ -128,6 +130,9 @@ class userController {
             verify     = (updateUser.affectedRows != 1) ? true : false;
 
         } catch(e) {
+
+            await userRepository.insertLog(await userUtils.insertLog(e.message, 'Error', 'Update', idUser));
+
             return res.status(500).json({
                 error: true,
                 msgUser: "Desculpe, ocorreu um erro ao tentar atualizar dados do usuario. Verifique se todos os campos foram preenchidos corretamente e tente novamente. Se o problema persistir, entre em contato conosco para assistência.",
@@ -136,12 +141,15 @@ class userController {
         }
 
         if (verify) {
+            await userRepository.insertLog(await userUtils.insertLog('Retorno da base de dados vazia.', 'Error', 'Update', idUser));
             return res.status(400).json({
                 error: true,
                 msgUser: "Desculpe, ocorreu um erro ao tentar atualizar dados do usuario. Verifique se todos os campos foram preenchidos corretamente e tente novamente. Se o problema persistir, entre em contato conosco para assistência.",
                 msgOriginal: "Não encontrou o usuario no banco."
             });
         }
+
+        await userRepository.insertLog(await userUtils.insertLog('Dados Atualizados com sucesso.', 'Success', 'Update', idUser));
 
         return res.status(200).json({
             error: false,
@@ -164,10 +172,13 @@ class userController {
 
         try {
 
-            arrDados = await userRepository.deleteUser(idUser);
-            verify   = (arrDados.affectedRows != 1) ? true : false;
+            const arrDados = await userRepository.deleteUser(idUser);
+            verify         = (arrDados.affectedRows != 1) ? true : false;
 
         }catch(e) {
+
+            await userRepository.insertLog(await userUtils.insertLog(e.message, 'Error', 'Delete', idUser));
+
             return res.status(500).json({
                 error: true,
                 msgUser: "Desculpe, ocorreu um erro ao tentar excluir dados do usuario. Se o problema persistir, entre em contato conosco para assistência.",
@@ -176,12 +187,15 @@ class userController {
         }
 
         if (verify) {
+            await userRepository.insertLog(await userUtils.insertLog('Retorno da base de dados vazia.', 'Error', 'Delete', idUser));
             return res.status(400).json({
                 error: true,
                 msgUser: "Desculpe, ocorreu um erro ao tentar excluir dados do usuario. Se o problema persistir, entre em contato conosco para assistência.",
                 msgOriginal: "Não encontrou o usuario no banco."
             });
         }
+
+        await userRepository.insertLog(await userUtils.insertLog('Dados deletada com sucesso.', 'Success', 'Delete', idUser));
 
         return res.status(200).json({
             error: false,

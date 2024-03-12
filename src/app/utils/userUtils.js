@@ -75,7 +75,7 @@ class userUtils {
 
     /**
      * 
-     * @param {*} dados 
+     * @array dados 
      * monta um array de inserção de dados
      * @returns 
      */
@@ -156,7 +156,7 @@ class userUtils {
 
     /**
      * 
-     * @param dados 
+     * @array dados 
      * monta o array para o update
      * @returns 
      */
@@ -168,6 +168,22 @@ class userUtils {
         const telefone = (dados.telefone)  ? this.formatarTelefone(dados.telefone) : '';
  
         const arrDados = {name: nome, last_name: lastName, cpf: cpf, telefone: telefone, email: dados.email};
+
+        return arrDados;
+    }
+
+    /**
+     * 
+     * @param mensagem
+     * @param type
+     * @param modo
+     * @param userId 
+     * monta o array para o cadastro de log
+     * @returns 
+     */
+    async insertLog(mensagem, type, modo, userId)
+    {
+        const arrDados = {mensagem: mensagem, type: type, modo: modo, user_id: userId};
 
         return arrDados;
     }

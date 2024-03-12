@@ -23,7 +23,7 @@ router.put('/password', userRequest.updatePassword, userController.putPassword);
 
 
 // DELETE
-
+    
 router.delete('/user', jwtUtils.checkToken, userController.deleteUser);
 
 // CASO NAO ENCONTRE NENHUMA ROTA
