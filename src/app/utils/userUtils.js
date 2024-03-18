@@ -123,7 +123,7 @@ class userUtils {
         let verify = false;
 
         try{
-            const arrDados = await userRepository.verifyTelephone(this.formatarTelefone(telefone));
+            const arrDados = await userRepository.verifyTelephone(await this.formatarTelefone(telefone));
 
             verify = (arrDados[0]) ? true : false;
         }catch(e) {

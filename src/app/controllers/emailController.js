@@ -54,7 +54,7 @@ class emailController {
                 to: email,
                 subject: "Alteração de Senha",
                 html: htmlBody,
-                text: `Obrigado por enviar o formulario de ajuda, SR(A) <strong>${'Luiz Felipe'}</strong>, Daqui alguns instantes você receberá um retorno!`
+                text: `Obrigado por enviar o formulario de ajuda, SR(A) <strong>${name}</strong>, Daqui alguns instantes você receberá um retorno!`
             });  
             
         } catch(error) {
@@ -84,7 +84,7 @@ class emailController {
                 to: email,
                 subject: "Confirmação de cadastro",
                 html: htmlBody,
-                text: `Obrigado por enviar o formulario de ajuda, SR(A) <strong>${'Luiz Felipe'}</strong>, Daqui alguns instantes você receberá um retorno!`
+                text: `Obrigado por enviar o formulario de ajuda, SR(A) <strong>${name}</strong>, Daqui alguns instantes você receberá um retorno!`
             });  
             
         } catch(error) {

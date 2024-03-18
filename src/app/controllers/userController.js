@@ -42,7 +42,7 @@ class userController {
 
         const jwt = jwtUtils.createToken(arrDados[0].id, arrDados[0].type);
 
-        await userRepository.insertLog(await userUtils.insertLog('Usuario Logado com Sucesso', 'Success', 'Select', arrDados[0].id));
+        // await userRepository.insertLog(await userUtils.insertLog('Usuario Logado com Sucesso', 'Success', 'Select', arrDados[0].id));
 
         delete arrDados[0].id;
         delete arrDados[0].type;
@@ -335,7 +335,7 @@ class userController {
 
     async setSms(req, res)
     {
-        const telefone = await userUtils.formatarTelefone(req.body.telefone);
+        const telefone = req.body.telefone;
         // const mensagem = req.body.mensagem.replace(/ /g, '+');
         const codigo   = Math.floor(100000 + Math.random() * 900000);
         const mensagem = 'seu+codigo+de+confirmação+é:+' + codigo;
@@ -349,24 +349,25 @@ class userController {
             });
         }
 
-        const url = "https://api.iagentesms.com.br/webservices/http.php?metodo=envio&usuario=" + process.env.EMAIL_IA + "&senha=" + process.env.PASSWORD_IA + "&celular=" + req.body.telefone + "&mensagem=" + mensagem;
+        const url = "https://api.iagentesms.com.br/webservices/http.php?metodo=envio&usuario=" + process.env.EMAIL_IA + "&senha=" + process.env.PASSWORD_IA + "&celular=" + telefone + "&mensagem=" + mensagem;
 
         await fetch(url)
         .then((response) => response.text())
         .then((text) => {
-            if(text == 'OK') {
-                return res.status(200).json({
-                    error: false,
-                    msgUser: 'Ótimo! Seu SMS foi enviado com sucesso.',
+            if(text !== 'OK') {
+                return res.status(500).json({
+                    error: true,
+                    msgUser: 'Ops! Parece que ocorreu um erro ao enviar o seu SMS. Pedimos desculpas pelo inconveniente. Por favor, tente novamente mais tarde. Se o problema persistir, entre em contato conosco para que possamos ajudá-lo a resolver.',
                     msgOriginal: null
                 }); 
             }
-            
-            return res.status(500).json({
-                error: true,
-                msgUser: 'Ops! Parece que ocorreu um erro ao enviar o seu SMS. Pedimos desculpas pelo inconveniente. Por favor, tente novamente mais tarde. Se o problema persistir, entre em contato conosco para que possamos ajudá-lo a resolver.',
-                msgOriginal: null
-            }); 
+
+            return res.status(200).json({
+                error: false,
+                msgUser: 'Ótimo! Seu SMS foi com o codigo foi enviado com sucesso.',
+                msgOriginal: null,
+                codigo: codigo
+            });
         })
     }
 }
