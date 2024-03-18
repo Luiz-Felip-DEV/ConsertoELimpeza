@@ -96,7 +96,7 @@ class emailUtils {
      * @returns 
      */
     async confirmCadaster(nome)
-    {
+    {4
         const htmlBody = `<!DOCTYPE html>
                             <html lang="pt-br">
                             <head>

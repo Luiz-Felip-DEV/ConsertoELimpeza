@@ -10,6 +10,7 @@ const router  = Router();
 
 router.post('/register', userRequest.setUser, userController.setUserAction);
 router.post('/login', userRequest.setLogin, userController.setLoginAction);
+router.post('/sms', userRequest.setSms, userController.setSms);
 
 // GET
 

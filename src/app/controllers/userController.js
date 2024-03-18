@@ -3,6 +3,7 @@ import userRepository from "../repositories/userRepository.js";
 import crypto from 'crypto';
 import jwtUtils from "../utils/jwtUtils.js";
 import emailController from "./emailController.js";
+import { response } from "express";
 
 class userController {
 
@@ -22,7 +23,7 @@ class userController {
 
         try {
             arrDados = await userRepository.setLogin(email, senhaHash);
-            verify   = (!arrDados[0]) ? true : false;
+            verify   = (!arrDados[0]) ? true : false;   
         }catch(e) {
             return res.status(500).json({
                 error: true,
@@ -177,7 +178,7 @@ class userController {
 
         }catch(e) {
 
-            await userRepository.insertLog(await userUtils.insertLog(e.message, 'Error', 'Delete', idUser));
+            // await userRepository.insertLog(await userUtils.insertLog(e.message, 'Error', 'Delete', idUser));
 
             return res.status(500).json({
                 error: true,
@@ -187,7 +188,7 @@ class userController {
         }
 
         if (verify) {
-            await userRepository.insertLog(await userUtils.insertLog('Retorno da base de dados vazia.', 'Error', 'Delete', idUser));
+            // await userRepository.insertLog(await userUtils.insertLog('Retorno da base de dados vazia.', 'Error', 'Delete', idUser));
             return res.status(400).json({
                 error: true,
                 msgUser: "Desculpe, ocorreu um erro ao tentar excluir dados do usuario. Se o problema persistir, entre em contato conosco para assistência.",
@@ -331,6 +332,43 @@ class userController {
             msgOriginal: null
         }); 
      }
+
+    async setSms(req, res)
+    {
+        const telefone = await userUtils.formatarTelefone(req.body.telefone);
+        // const mensagem = req.body.mensagem.replace(/ /g, '+');
+        const codigo   = Math.floor(100000 + Math.random() * 900000);
+        const mensagem = 'seu+codigo+de+confirmação+é:+' + codigo;
+
+        if (!await userUtils.verifyTelephone(telefone))
+        {
+            return res.status(400).json({
+                error: true,
+                msgUser: 'Telefone nao encontrado na base de dados.',
+                msgOriginal: 'Telefone nao encontrado na base de dados'
+            });
+        }
+
+        const url = "https://api.iagentesms.com.br/webservices/http.php?metodo=envio&usuario=" + process.env.EMAIL_IA + "&senha=" + process.env.PASSWORD_IA + "&celular=" + req.body.telefone + "&mensagem=" + mensagem;
+
+        await fetch(url)
+        .then((response) => response.text())
+        .then((text) => {
+            if(text == 'OK') {
+                return res.status(200).json({
+                    error: false,
+                    msgUser: 'Ótimo! Seu SMS foi enviado com sucesso.',
+                    msgOriginal: null
+                }); 
+            }
+            
+            return res.status(500).json({
+                error: true,
+                msgUser: 'Ops! Parece que ocorreu um erro ao enviar o seu SMS. Pedimos desculpas pelo inconveniente. Por favor, tente novamente mais tarde. Se o problema persistir, entre em contato conosco para que possamos ajudá-lo a resolver.',
+                msgOriginal: null
+            }); 
+        })
+    }
 }
 
 export default new userController();

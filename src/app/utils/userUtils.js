@@ -8,7 +8,7 @@ class userUtils {
      * mascara para deixar as primeiras letras maisculas
      * @returns 
      */
-    formatarNome(nome)
+    async formatarNome(nome)
     {
         const arrNome = nome.split(' ');
         for (let i = 0; i < arrNome.length; i++) {
@@ -24,7 +24,7 @@ class userUtils {
      * mascara para cpf
      * @returns 
      */
-    formatarCpf(cpf)
+    async formatarCpf(cpf)
     {
         const cpfLimpo = cpf.replace(/\D/g, '');
 
@@ -38,7 +38,7 @@ class userUtils {
      * mascara para telefone
      * @returns 
      */
-    formatarTelefone(telefone)
+    async formatarTelefone(telefone)
     {
         const telefoneLimpo = telefone.replace(/\D/g, '');
 
@@ -81,10 +81,10 @@ class userUtils {
      */
     async setUser(dados)
     {
-        const nome     = (dados.name)      ? this.formatarNome(dados.name)         : '';
-        const lastName = (dados.last_name) ? this.formatarNome(dados.last_name)    : ''; 
-        const cpf      = (dados.cpf)       ? this.formatarCpf(dados.cpf)           : '';
-        const telefone = (dados.telefone)  ? this.formatarTelefone(dados.telefone) : '';
+        const nome     = (dados.name)      ? await this.formatarNome(dados.name)         : '';
+        const lastName = (dados.last_name) ? await this.formatarNome(dados.last_name)    : ''; 
+        const cpf      = (dados.cpf)       ? await this.formatarCpf(dados.cpf)           : '';
+        const telefone = (dados.telefone)  ? await this.formatarTelefone(dados.telefone) : '';
  
         const arrDados = {name: nome, last_name: lastName, cpf: cpf, telefone: telefone, email: dados.email, password: dados.password, type: dados.type.toUpperCase()};
 
@@ -102,7 +102,7 @@ class userUtils {
         let verify = false;
 
         try{
-            const arrDados = await userRepository.verifyCpf(this.formatarCpf(cpf));
+            const arrDados = await userRepository.verifyCpf(await this.formatarCpf(cpf));
 
             verify = (arrDados[0]) ? true : false;
         }catch(e) {
@@ -162,10 +162,10 @@ class userUtils {
      */
     async updateUser(dados)
     {
-        const nome     = (dados.name)      ? this.formatarNome(dados.name)         : '';
-        const lastName = (dados.last_name) ? this.formatarNome(dados.last_name)    : ''; 
-        const cpf      = (dados.cpf)       ? this.formatarCpf(dados.cpf)           : '';
-        const telefone = (dados.telefone)  ? this.formatarTelefone(dados.telefone) : '';
+        const nome     = (dados.name)      ? await this.formatarNome(dados.name)         : '';
+        const lastName = (dados.last_name) ? await this.formatarNome(dados.last_name)    : ''; 
+        const cpf      = (dados.cpf)       ? await this.formatarCpf(dados.cpf)           : '';
+        const telefone = (dados.telefone)  ? await this.formatarTelefone(dados.telefone) : '';
  
         const arrDados = {name: nome, last_name: lastName, cpf: cpf, telefone: telefone, email: dados.email};
 
