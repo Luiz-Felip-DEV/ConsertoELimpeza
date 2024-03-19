@@ -3,6 +3,8 @@ import { Router } from "express";
 import jwtUtils from "./app/utils/jwtUtils.js";
 import userRequest from "./app/requests/userRequest.js";
 import userController from "./app/controllers/userController.js";
+import productRequest from "./app/requests/produtoRequest.js";
+import productController from "./app/controllers/produtoController.js";
 
 const router  = Router();
 
@@ -11,6 +13,7 @@ const router  = Router();
 router.post('/register', userRequest.setUser, userController.setUserAction);
 router.post('/login', userRequest.setLogin, userController.setLoginAction);
 router.post('/sms', userRequest.setSms, userController.setSms);
+router.post('/product', productRequest.setProduct, productController.setProduct);
 
 // GET
 
