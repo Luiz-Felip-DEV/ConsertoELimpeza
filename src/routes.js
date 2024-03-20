@@ -5,6 +5,7 @@ import userRequest from "./app/requests/userRequest.js";
 import userController from "./app/controllers/userController.js";
 import productRequest from "./app/requests/produtoRequest.js";
 import productController from "./app/controllers/produtoController.js";
+import produtoController from "./app/controllers/produtoController.js";
 
 const router  = Router();
 
@@ -19,6 +20,7 @@ router.post('/product', productRequest.setProduct, productController.setProduct)
 
 router.get('/user', jwtUtils.checkToken, userController.getDadosUser);
 router.get('/reset-code', userController.resetCode);
+router.get('/products', productController.getProducts);
 
 // UPDATE
 
@@ -29,6 +31,7 @@ router.put('/password', userRequest.updatePassword, userController.putPassword);
 // DELETE
     
 router.delete('/user', jwtUtils.checkToken, userController.deleteUser);
+router.delete('/product', productRequest.deleteProduct, produtoController.deleteProduct);
 
 // CASO NAO ENCONTRE NENHUMA ROTA
 

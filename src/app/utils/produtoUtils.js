@@ -28,7 +28,7 @@ class produtoUtils {
  
         const arrDados = {nome: nome, valor: valor, type: type};
 
-        return arrDados;
+        return arrDados;    
     }
 }
 

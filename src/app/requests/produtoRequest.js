@@ -36,6 +36,33 @@ class produtoRequest {
 
         next();
     }
+
+    /**
+     * 
+     * @param req
+     * @param res
+     * @param next 
+     * verifica se todos os parametros foram enviados
+     * @returns 
+     */
+    deleteProduct(req, res, next)
+    {
+        let msg = '';
+
+        if(!req.body.id_product) {
+            msg = 'Parametro id_product é obrigatorio.'
+        }  
+
+        if (msg) {  
+            return res.status(400).json({   
+                error: true,
+                msgUser: msg,
+                msgOriginal: msg
+            });
+        }
+
+        next();
+    }
 }
 
 export default new produtoRequest();
