@@ -26,6 +26,7 @@ router.get('/products', productController.getProducts);
 
 router.put('/update', jwtUtils.checkToken,userRequest.updateUser, userController.updateUser);
 router.put('/password', userRequest.updatePassword, userController.putPassword);
+router.put('/product', productRequest.updateProduct, productController.updateProduct);
 
 
 // DELETE

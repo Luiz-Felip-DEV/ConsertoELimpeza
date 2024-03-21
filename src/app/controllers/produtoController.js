@@ -15,6 +15,14 @@ class produtoController {
     {
         const arrDados = await productUtils.setProduct(req.body);
 
+        if (arrDados.length === 0) {
+            return res.status(500).json({
+                error: true,
+                msgUser: 'Tipo de produto invalido, Tipos aceitos: FRUTA, CARNE, PEIXE, LEGUMES, DERIVADO.',
+                msgOriginal: 'Tipo de produto invalido.'
+            });
+        }
+
         let verify = false;
 
         try {
@@ -85,12 +93,11 @@ class produtoController {
     async deleteProduct(req, res)
     {
         const idProduct = req.body.id_product;
-        let arrDados    = [];
         let verify      = false;
 
         try {
-            arrDados = await productRepository.deleteProduct(idProduct);
-            verify   = (arrDados.affectedRows != 1) ? true : false;
+            const arrDados = await productRepository.deleteProduct(idProduct);
+            verify         = (arrDados.affectedRows != 1) ? true : false;
         }catch(e) {
             return res.status(500).json({
                 error: true,
@@ -102,7 +109,7 @@ class produtoController {
         if (verify) {
             return res.status(400).json({
                 error: true,
-                msgUser: "Erro ao deletar produto, Por Favor, Tente novamente mais tarde.",
+                msgUser: "Produto não encontrado, Por Favor, Tente novamente mais tarde.",
                 msgOriginal: "Array retornou vazio."
             });
         }
@@ -116,9 +123,42 @@ class produtoController {
 
     async updateProduct(req, res)
     {
-        const idProduct = req.body.id_produto;
+        const arrDados = await productUtils.updateProduct(req.body);
 
+        if (arrDados.length === 0) {
+            return res.status(500).json({
+                error: true,
+                msgUser: 'Tipo de produto invalido, Tipos aceitos: FRUTA, CARNE, PEIXE, LEGUMES, DERIVADO.',
+                msgOriginal: 'Tipo de produto invalido.'
+            });
+        }
 
+        let verify    = false;
+
+        try {
+            const arrUpdate = await productRepository.updateProduct(arrDados);
+            verify          = (arrUpdate.affectedRows != 1) ? true : false;
+        } catch {
+            return res.status(500).json({
+                error: true,
+                msgUser: 'Erro ao tentar atualizar produto. Por Favor, Tente Novamente mais tarde.',
+                msgOriginal: 'Erro ao tentar atualizar produto, Error: ' + e.message
+            });
+        }
+
+        if (verify) {
+            return res.status(400).json({
+                error: true,
+                msgUser: 'Produto não encontrado, Por Favor, Tente Novamente mais tarde.',
+                msgOriginal: 'Produto com o id: ' + req.body.id_product + ', não encontrado'
+            });
+        }
+
+        return res.status(200).json({
+            error: false,
+            msgUser: 'Produto atualizado com sucesso.',
+            msgOriginal: null
+        });
     }
 }
 

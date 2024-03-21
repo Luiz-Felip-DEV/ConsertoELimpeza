@@ -50,6 +50,20 @@ class produtoRepository {
             });
         });
     }
+
+    async updateProduct(dados)
+    {
+        const sql = 'UPDATE produtos SET nome = ?, valor = ?, type = ? WHERE id = ?';
+
+        return new Promise((resolve, reject) => {
+            conexao.query(sql,[dados.nome, dados.valor, dados.type, dados.id],(error, result) => {
+                if (error) return reject(false);
+
+                const row = JSON.parse(JSON.stringify(result));
+                return resolve(row);
+            });
+        });
+    }
 }
 
 export default new produtoRepository();
