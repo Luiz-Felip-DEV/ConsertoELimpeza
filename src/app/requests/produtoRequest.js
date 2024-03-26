@@ -1,5 +1,3 @@
-import userUtils from "../utils/userUtils.js";
-
 class produtoRequest {
 
     /**
