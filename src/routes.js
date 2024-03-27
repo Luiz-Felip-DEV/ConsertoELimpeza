@@ -5,7 +5,6 @@ import userRequest from "./app/requests/userRequest.js";
 import userController from "./app/controllers/userController.js";
 import productRequest from "./app/requests/produtoRequest.js";
 import productController from "./app/controllers/produtoController.js";
-import produtoController from "./app/controllers/produtoController.js";
 
 const router  = Router();
 
@@ -32,7 +31,7 @@ router.put('/product', productRequest.updateProduct, productController.updatePro
 // DELETE
     
 router.delete('/user', jwtUtils.checkToken, userController.deleteUser);
-router.delete('/product', productRequest.deleteProduct, produtoController.deleteProduct);
+router.delete('/product', productRequest.deleteProduct, productController.deleteProduct);
 
 // CASO NAO ENCONTRE NENHUMA ROTA
 
