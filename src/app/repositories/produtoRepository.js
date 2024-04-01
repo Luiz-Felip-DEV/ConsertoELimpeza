@@ -25,7 +25,7 @@ class produtoRepository {
 
     async getProducts()
     {
-        const sql = 'SELECT id, nome, valor, type FROM produtos';
+        const sql = 'SELECT id, nome, quantidade,valor, type FROM produtos';
 
         return new Promise((resolve, reject) => {
             conexao.query(sql,(error, result) => {
@@ -57,6 +57,34 @@ class produtoRepository {
 
         return new Promise((resolve, reject) => {
             conexao.query(sql,[dados.nome, dados.valor, dados.type, dados.id],(error, result) => {
+                if (error) return reject(false);
+
+                const row = JSON.parse(JSON.stringify(result));
+                return resolve(row);
+            });
+        });
+    }
+
+    async getQtd(id)
+    {
+        const sql = 'SELECT quantidade FROM produtos WHERE id = ?';
+
+        return new Promise((resolve, reject) => {
+            conexao.query(sql,id,(error, result) => {
+                if (error) return reject(false);
+
+                const row = JSON.parse(JSON.stringify(result));
+                return resolve(row);
+            });
+        });
+    }
+
+    async putQtd(id, quantidade)
+    {
+        const sql = 'UPDATE produtos SET quantidade = ? WHERE id = ?';
+
+        return new Promise((resolve, reject) => {
+            conexao.query(sql,[quantidade, id],(error, result) => {
                 if (error) return reject(false);
 
                 const row = JSON.parse(JSON.stringify(result));
