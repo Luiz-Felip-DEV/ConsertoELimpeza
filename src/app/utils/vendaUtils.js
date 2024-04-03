@@ -1,4 +1,4 @@
-import userUtils from "./userUtils.js";
+import saleRepository from "../repositories/vendaRepository.js";
 
 class vendaUtils {
   /**
@@ -40,6 +40,19 @@ class vendaUtils {
     const arrDados = { tipo_pagamento: tipoPamento, quantidade: quantidade, produto_id: produtoId };
 
     return arrDados;
+  }
+
+  /**
+   *
+   * @array dados
+   * monta o array para o update
+   * @returns
+   */
+  async idSale()
+  {
+      const idAtual = await saleRepository.idSale();
+
+      return idAtual + 1;
   }
 }
 

@@ -1,4 +1,5 @@
 import userRepository from "../repositories/userRepository.js";
+import crypto from 'crypto';
 
 class userUtils {
 
@@ -85,8 +86,9 @@ class userUtils {
         const lastName = (dados.last_name) ? await this.formatarNome(dados.last_name)    : ''; 
         const cpf      = (dados.cpf)       ? await this.formatarCpf(dados.cpf)           : '';
         const telefone = (dados.telefone)  ? await this.formatarTelefone(dados.telefone) : '';
+        const password = (dados.password)  ? crypto.createHash('sha256').update(dados.password).digest('hex') : '';
  
-        const arrDados = {name: nome, last_name: lastName, cpf: cpf, telefone: telefone, email: dados.email, password: dados.password, type: dados.type.toUpperCase()};
+        const arrDados = {name: nome, last_name: lastName, cpf: cpf, telefone: telefone, email: dados.email, password: password, type: dados.type.toUpperCase()};
 
         return arrDados;
     }

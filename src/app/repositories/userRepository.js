@@ -9,7 +9,7 @@ class userRepository {
      * query para login
      * @returns 
      */
-    async setLogin(email, senha)
+    async   (email, senha)
     {
         const sql = 'SELECT id, name, last_name, email, telefone,type FROM users WHERE email = ? AND password = ?';
 
@@ -35,6 +35,7 @@ class userRepository {
 
         return new Promise((resolve, reject) => {
             conexao.query(sql,dados,(error, result) => {
+                console.log(error);
                 if (error) return reject(false);
 
                 const row = JSON.parse(JSON.stringify(result));

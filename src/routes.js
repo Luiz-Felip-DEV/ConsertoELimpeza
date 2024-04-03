@@ -5,6 +5,8 @@ import userRequest from "./app/requests/userRequest.js";
 import userController from "./app/controllers/userController.js";
 import productRequest from "./app/requests/produtoRequest.js";
 import productController from "./app/controllers/produtoController.js";
+import saleRequest from "./app/requests/vendaRequest.js";
+import saleController from "./app/controllers/vendaController.js";
 
 const router  = Router();
 
@@ -26,7 +28,7 @@ router.get('/products', productController.getProducts);
 router.put('/update', jwtUtils.checkToken, userRequest.updateUser, userController.updateUser);
 router.put('/password', userRequest.updatePassword, userController.putPassword);
 router.put('/product', productRequest.updateProduct, productController.updateProduct);
-router.put('/qtd', productRequest.putQtd, productController.putQtd);
+router.put('/qtd', saleRequest.setSale, saleController.setSale);
 
 
 

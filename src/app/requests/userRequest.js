@@ -77,6 +77,10 @@ class userRequest {
             msg = 'Parametro email invalido.'   
         }
 
+        if (req.body.type && (req.body.type.toUpperCase() != 'FU' && req.body.type.toUpperCase() != 'ADM')) {
+            msg = 'Parametro type invalido, tipos aceitos FU e ADM.' 
+        }
+
         if (msg) {  
             return res.status(400).json({   
                 error: true,
@@ -200,11 +204,7 @@ class userRequest {
     setSms(req, res, next)
     {
         let msg = '';
-
-        if(!req.body.mensagem) {
-            msg = 'Parametro mensagem é obrigatorio.'
-        }
-
+        
         if(!req.body.telefone) {
             msg = 'Parametro telefone é obrigatorio.'
         }  
