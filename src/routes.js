@@ -16,6 +16,8 @@ router.post('/register', userRequest.setUser, userController.setUserAction);
 router.post('/login', userRequest.setLogin, userController.setLoginAction);
 router.post('/sms', userRequest.setSms, userController.setSms);
 router.post('/product', productRequest.setProduct, productController.setProduct);
+router.post('/sale', jwtUtils.checkToken, saleRequest.setSale, saleController.setSale);
+
 
 // GET
 
@@ -28,7 +30,6 @@ router.get('/products', productController.getProducts);
 router.put('/update', jwtUtils.checkToken, userRequest.updateUser, userController.updateUser);
 router.put('/password', userRequest.updatePassword, userController.putPassword);
 router.put('/product', productRequest.updateProduct, productController.updateProduct);
-router.put('/qtd', saleRequest.setSale, saleController.setSale);
 
 
 

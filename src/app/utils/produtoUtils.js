@@ -51,6 +51,7 @@ class produtoUtils {
     const nome = dados.nome ? await userUtils.formatarNome(dados.nome) : "";
     const valor = dados.valor ? await this.formatarReal(dados.valor) : "";
     const type = dados.type ? dados.type.toUpperCase() : "";
+    const quantidade = dados.quantidade ? dados.quantidade : 0;
 
     // type -> FRUTA, CARNE, PEIXE, LEGUMES, DERIVADO
 
@@ -58,6 +59,7 @@ class produtoUtils {
       id: dados.id_product,
       nome: nome,
       valor: valor,
+      quantidade: quantidade,
       type: type,
     };
 

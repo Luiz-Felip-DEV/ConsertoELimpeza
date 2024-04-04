@@ -82,6 +82,10 @@ class produtoRequest {
       msg = "Parametro type é obrigatorio.";
     }
 
+    if (!req.body.quantidade) {
+      msg = "Parametro quantidade é obrigatorio.";
+    }
+
     if (!req.body.valor) {
       msg = "Parametro valor é obrigatorio.";
     }

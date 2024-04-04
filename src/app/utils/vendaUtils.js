@@ -1,4 +1,5 @@
 import saleRepository from "../repositories/vendaRepository.js";
+import productRepository from "../repositories/produtoRepository.js";
 
 class vendaUtils {
   /**
@@ -37,7 +38,7 @@ class vendaUtils {
 
     // type -> PIX, CARTAO, DINHEIRO
 
-    const arrDados = { tipo_pagamento: tipoPamento, quantidade: quantidade, produto_id: produtoId };
+    const arrDados = {id: dados.id_sale ,tipo_pagamento: tipoPamento, quantidade: quantidade, produto_id: produtoId };
 
     return arrDados;
   }
@@ -53,6 +54,22 @@ class vendaUtils {
       const idAtual = await saleRepository.idSale();
 
       return idAtual + 1;
+  }
+
+  /**
+   *
+   * @array dados
+   * monta o array para o update
+   * @returns
+   */
+  async verifyQtd(idProduct, quantidade)
+  {
+    const arrDados   = await productRepository.getQtd(idProduct);
+    const qtdProduct = arrDados[0].quantidade;
+
+    const verify  = (quantidade > qtdProduct) ? true : false;
+
+    return {error: verify, name: arrDados[0].nome}
   }
 }
 

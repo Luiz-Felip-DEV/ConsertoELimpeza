@@ -3,7 +3,6 @@ import userRepository from "../repositories/userRepository.js";
 import crypto from "crypto";
 import jwtUtils from "../utils/jwtUtils.js";
 import emailController from "./emailController.js";
-import { response } from "express";
 
 class userController {
   /**
@@ -22,7 +21,7 @@ class userController {
 
     try {
       arrDados = await userRepository.setLogin(email, senhaHash);
-      verify = !arrDados[0] ? true : false;
+      verify   = !arrDados[0] ? true : false;
     } catch (e) {
       return res.status(500).json({
         error: true,

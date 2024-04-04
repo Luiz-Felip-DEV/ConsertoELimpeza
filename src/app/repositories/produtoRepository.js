@@ -53,10 +53,10 @@ class produtoRepository {
 
     async updateProduct(dados)
     {
-        const sql = 'UPDATE produtos SET nome = ?, valor = ?, type = ? WHERE id = ?';
+        const sql = 'UPDATE produtos SET nome = ?, valor = ?, quantidade = ?, type = ? WHERE id = ?';
 
         return new Promise((resolve, reject) => {
-            conexao.query(sql,[dados.nome, dados.valor, dados.type, dados.id],(error, result) => {
+            conexao.query(sql,[dados.nome, dados.valor, dados.quantidade, dados.type, dados.id],(error, result) => {
                 if (error) return reject(false);
 
                 const row = JSON.parse(JSON.stringify(result));
@@ -67,7 +67,7 @@ class produtoRepository {
 
     async getQtd(id)
     {
-        const sql = 'SELECT quantidade FROM produtos WHERE id = ?';
+        const sql = 'SELECT nome, quantidade FROM produtos WHERE id = ?';
 
         return new Promise((resolve, reject) => {
             conexao.query(sql,id,(error, result) => {

@@ -1,3 +1,5 @@
+import saleUtils from "../utils/vendaUtils.js";
+
 class vendaRequest {
     /**
    *
@@ -7,12 +9,19 @@ class vendaRequest {
    * verifica se todos os parametros foram enviados
    * @returns
    */
-  setSale(req, res, next) {
+  async setSale(req, res, next) {
+
     let msg        = "";
     const arrDados = req.body;
 
     for (let i = 0; i < arrDados.length; i++) {
 
+      const objVerify = await saleUtils.verifyQtd(arrDados[i].id_product, arrDados[i].quantidade);
+
+      if (objVerify.error) {
+        msg = "Quantidade de " + objVerify.name + " insuficiente no estoque";
+      }
+      
       if (!arrDados[i].id_product) {
         msg = "Parametro id_product é obrigatorio.";
       }

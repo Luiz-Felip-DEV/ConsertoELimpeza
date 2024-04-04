@@ -6,7 +6,7 @@ class vendaRepository {
     const sql = "INSERT INTO vendas SET ?";
 
     return new Promise((resolve, reject) => {
-      conexao.query(sql, dados, (error, result) => {
+      conexao.query(sql, dados, (error, result) => {  
         if (error) return reject(false);
 
         const row = JSON.parse(JSON.stringify(result));

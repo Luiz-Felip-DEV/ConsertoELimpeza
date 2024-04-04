@@ -9,7 +9,7 @@ class userRepository {
      * query para login
      * @returns 
      */
-    async   (email, senha)
+    async setLogin(email, senha)
     {
         const sql = 'SELECT id, name, last_name, email, telefone,type FROM users WHERE email = ? AND password = ?';
 

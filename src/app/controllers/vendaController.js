@@ -6,112 +6,103 @@ class vendaController {
 
   async setSale(req, res)
   {
-    // const arrTeste = req.body;
+    const idCompra     = await saleUtils.idSale();
+    const arrItensComp = req.body;
 
-    // for (let i = 0; i < arrTeste.length; i++) {
-    //   console.log(arrTeste[i].id_product);
-    //   console.log(arrTeste[i].quantidade);
-    //   console.log(arrTeste[i].tipo_pagamento);
-    // }
+    for (let i = 0; i < arrItensComp.length; i++) {
+      req.body[i].id_sale = idCompra;
 
-    // const teste = await saleUtils.idSale();
-    const idProduto  = req.body.id_product;
-    const quantidade = req.body.quantidade;
-    let arrDados     = [];
+      const idProduto  = arrItensComp[i].id_product;
+      const quantidade = arrItensComp[i].quantidade;
+      
+      let arrSetDados = [];
+      let verifySet   = false
 
-    try {
-      arrDados = await productRepository.getQtd(idProduto);
-    } catch (e) {
-      return res.status(400).json({
-        error: true,
-        msgUser: "Quantidade de produto insuficiente.",
-        msgOriginal: "Erro ao buscar quantidade de produto, " + e.message + ".",
-      });
-    }
+      try {
+          arrSetDados = await saleUtils.setSale(req.body[i]);
+          verifySet   = (!arrSetDados.tipo_pagamento) ? true : false;
+      } catch(e) {
+          return res.status(400).json({
+              error: true,
+              msgUser: "Erro ao validar tipo de pagamento.",
+              msgOriginal: "Erro ao validar tipo de pagamento, " + e.message + ".",
+            });
+      }
 
-    if (!arrDados[0]) {
-      return res.status(400).json({
-        error: true,
-        msgUser: "Produto não encontrado.",
-        msgOriginal: "Produto não encontrado",
-      });
-    }
+      if (verifySet) {
+          return res.status(400).json({
+              error: true,
+              msgUser: "Tipo de pagamento invalido, tipos aceitos: PIX, CARTAO, DINHEIRO.",
+              msgOriginal: "Tipo de pagamento invalido"
+            });
+      }
 
-    const qtdProduct = arrDados[0].quantidade;
+      let setSaleH = [];
+      let verifyH = false;
 
-    if (quantidade > qtdProduct) {
-      return res.status(400).json({
-        error: true,
-        msgUser: "Quantidade de produto insuficiente.",
-        msgOriginal: "Quantidade de produto insuficiente.",
-      });
-    }
-    
-    let arrSetDados = [];
-    let verifySet   = false
+      try {
+          setSaleH = await saleRepository.setVenda(arrSetDados);
+          verifyH  = (setSaleH.affectedRows != 1) ? true : false;
+      }catch(e) {
+          return res.status(400).json({
+              error: true,
+              msgUser: "Erro ao tentar cadastrar venda, Tente Novamente mais tarde.",
+              msgOriginal: "Erro ao tentar cadastrar venda, " + e.message
+            });
+      }
 
-    try {
-        arrSetDados = await saleUtils.setSale(req.body);
-        verifySet   = (!arrSetDados.tipo_pagamento) ? true : false;
-    } catch(e) {
+      if (verifyH) {
+          return res.status(400).json({
+              error: true,
+              msgUser: "Erro ao tentar cadastrar venda, Tente Novamente mais tarde.",
+              msgOriginal: "Erro ao tentar cadastrar venda, verifyH retornou vazio."
+            });
+      }
+
+      let arrDados = [];
+
+      try {
+        arrDados = await productRepository.getQtd(idProduto);
+      } catch (e) {
         return res.status(400).json({
-            error: true,
-            msgUser: "Erro ao validar tipo de pagamento.",
-            msgOriginal: "Erro ao validar tipo de pagamento, " + e.message + ".",
-          });
-    }
+          error: true,
+          msgUser: "Quantidade de produto insuficiente.",
+          msgOriginal: "Erro ao buscar quantidade de produto, " + e.message + ".",
+        });
+      }
 
-    if (verifySet) {
+      if (!arrDados[0]) {
         return res.status(400).json({
-            error: true,
-            msgUser: "Tipo de pagamento invalido, tipos aceitos: PIX, CARTAO, DINHEIRO.",
-            msgOriginal: "Tipo de pagamento invalido"
-          });
-    }
+          error: true,
+          msgUser: "Produto não encontrado.",
+          msgOriginal: "Produto não encontrado",
+        });
+      }
 
-    let setSaleH = [];
-    let verifyH = false;
+      const qtdProduct = arrDados[0].quantidade;
 
-    try {
-        setSaleH = await saleRepository.setVenda(arrSetDados);
-        verifyH  = (setSaleH.affectedRows != 1) ? true : false;
-    }catch(e) {
+      const putQtd = qtdProduct - quantidade;
+      let arrPut   = [];
+      let verify   = false;
+
+      try {
+        arrPut = await productRepository.putQtd(idProduto, putQtd);
+        verify = arrPut.affectedRows != 1 ? true : false;
+      } catch (e) {
         return res.status(400).json({
-            error: true,
-            msgUser: "Erro ao tentar cadastrar venda, Tente Novamente mais tarde.",
-            msgOriginal: "Erro ao tentar cadastrar venda, " + e.message
-          });
-    }
+          error: true,
+          msgUser: "Erro ao atualizar quantidade de produto.",
+          msgOriginal: "Erro ao atualizar quantidade de produto.",
+        });
+      }
 
-    if (verifyH) {
+      if (verify) {
         return res.status(400).json({
-            error: true,
-            msgUser: "Erro ao tentar cadastrar venda, Tente Novamente mais tarde.",
-            msgOriginal: "Erro ao tentar cadastrar venda, verifyH retornou vazio."
-          });
-    }
-
-    const putQtd = qtdProduct - quantidade;
-    let arrPut = [];
-    let verify = false;
-
-    try {
-      arrPut = await productRepository.putQtd(idProduto, putQtd);
-      verify = arrPut.affectedRows != 1 ? true : false;
-    } catch (e) {
-      return res.status(400).json({
-        error: true,
-        msgUser: "Erro ao atualizar quantidade de produto.",
-        msgOriginal: "Erro ao atualizar quantidade de produto.",
-      });
-    }
-
-    if (verify) {
-      return res.status(400).json({
-        error: true,
-        msgUser: "Produto não encontrado.",
-        msgOriginal: "Erro ao atualizar quantidade de produto.",
-      });
+          error: true,
+          msgUser: "Produto não encontrado.",
+          msgOriginal: "Erro ao atualizar quantidade de produto.",
+        });
+      }
     }
 
     return res.status(200).json({
@@ -119,8 +110,8 @@ class vendaController {
       msgUser: "Produtos atualizado com sucesso.",
       msgOriginal: "Erro ao atualizar quantidade de produto.",
     });
+    
   }
-   
 }
 
 export default new vendaController();
