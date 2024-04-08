@@ -1,6 +1,7 @@
 import productRepository from "../repositories/produtoRepository.js";
 import saleRepository from "../repositories/vendaRepository.js";
 import saleUtils from "../utils/vendaUtils.js";
+import productUtils from "../utils/produtoUtils.js";
 
 class vendaController {
 
@@ -109,8 +110,50 @@ class vendaController {
       error: false,
       msgUser: "Produtos atualizado com sucesso.",
       msgOriginal: "Erro ao atualizar quantidade de produto.",
+    }); 
+  }
+
+  async purchaseValue(req, res)
+  {
+    const idSale  = req.query.id_sale;
+    let arraySale = []; 
+    let verify    = false;
+
+    try {
+      arraySale = await saleRepository.purchaseValue(idSale);
+      verify    = (!arraySale[0]) ? true : false;
+    } catch (e) {
+      return res.status(400).json({
+        error: true,
+        msgUser: "Erro ao trazer produtos.",
+        msgOriginal: "Erro ao trazer produtos.",
+      });
+    }
+
+    if (verify) {
+      return res.status(400).json({
+        error: true,
+        msgUser: "Compra não encontrada.",
+        msgOriginal: "Compra não encontrada.",
+      });
+    }
+
+    let valorFinal  = 0;
+
+    for (let i = 0; i < arraySale.length; i++) {
+      valorFinal = valorFinal + arraySale[i].valor;
+      arraySale[i].valor = await productUtils.formatarReal(arraySale[i].valor);
+    }
+
+    valorFinal = await productUtils.formatarReal(valorFinal);
+
+    return res.status(200).json({
+      error: false,
+      msgUser: null,
+      msgOriginal: null,
+      valorTotal: valorFinal,
+      produtos: arraySale
     });
-    
   }
 }
 
