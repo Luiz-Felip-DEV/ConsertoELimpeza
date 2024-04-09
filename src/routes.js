@@ -25,6 +25,7 @@ router.get('/user', jwtUtils.checkToken, userController.getDadosUser);
 router.get('/reset-code', userController.resetCode);
 router.get('/products', productController.getProducts);
 router.get('/purchase', saleRequest.purchaseValue, saleController.purchaseValue);
+router.get('/product-over', jwtUtils.checkToken, productController.productOver);
 
 // UPDATE
 

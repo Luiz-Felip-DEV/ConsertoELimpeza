@@ -92,6 +92,20 @@ class produtoRepository {
             });
         });
     }
+
+    async productOver()
+    {
+        const sql = 'SELECT T1.nome, T1.type FROM produtos T1 WHERE T1.quantidade = 0';
+
+        return new Promise((resolve, reject) => {
+            conexao.query(sql,(error, result) => {
+                if (error) return reject(false);
+
+                const row = JSON.parse(JSON.stringify(result));
+                return resolve(row);
+            });
+        });
+    }
 }
 
 export default new produtoRepository();

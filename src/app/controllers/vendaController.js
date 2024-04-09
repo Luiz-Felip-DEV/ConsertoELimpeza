@@ -17,7 +17,7 @@ class vendaController {
       const quantidade = arrItensComp[i].quantidade;
       
       let arrSetDados = [];
-      let verifySet   = false
+      let verifySet   = false;
 
       try {
           arrSetDados = await saleUtils.setSale(req.body[i]);

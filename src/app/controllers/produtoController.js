@@ -1,5 +1,6 @@
 import productUtils from "../utils/produtoUtils.js";
 import productRepository from "../repositories/produtoRepository.js";
+import vendaRepository from "../repositories/vendaRepository.js";
 
 class produtoController {
   /**
@@ -152,6 +153,38 @@ class produtoController {
       error: false,
       msgUser: "Produto atualizado com sucesso.",
       msgOriginal: null,
+    });
+  }
+
+  async productOver(req, res)
+  {
+    let arrDados = [];
+    let verify   = false;
+
+    try {
+      arrDados = await productRepository.productOver();
+      verify   = (!arrDados[0]) ? true : false;
+    } catch (e) {
+      return res.status(400).json({
+        error: true,
+        msgUser: "Erro ao buscar produtos no estoque.",
+        msgOriginal: "Erro ao buscar produtos no estoque.",
+      });
+    }
+
+    if (verify) {
+        return res.status(200).json({
+          error: false,
+          msgUser: "Nenhum produto acabando no estoque.",
+          msgOriginal: null,
+        });
+    }
+
+    return res.status(200).json({
+      error: false,
+      msgUser: null,
+      msgOriginal: null,
+      produtos: arrDados
     });
   }
 }
